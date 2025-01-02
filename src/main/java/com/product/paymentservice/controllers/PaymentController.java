@@ -1,21 +1,21 @@
 package com.product.paymentservice.controllers;
 
 import com.product.paymentservice.dtos.PaymentInputDto;
+import com.product.paymentservice.services.DummyProductService;
 import com.product.paymentservice.services.PaymentService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/payments")
 public class PaymentController {
 
     private PaymentService paymentService;
+    private DummyProductService productService;
 
-    public PaymentController(PaymentService paymentService)
+    public PaymentController(PaymentService paymentService, DummyProductService productService)
     {
         this.paymentService = paymentService;
+        this.productService = productService;
     }
 
     @PostMapping
@@ -29,5 +29,11 @@ public class PaymentController {
     {
         System.out.println(webhookEvent);
         return "OK";
+    }
+
+    @GetMapping("/products/{id}")
+    public String getProductById(@PathVariable String id)
+    {
+        return productService.getProductById(id);
     }
 }
